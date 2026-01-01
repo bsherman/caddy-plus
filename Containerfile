@@ -2,6 +2,7 @@ ARG caddyversion=2
 FROM docker.io/caddy:${caddyversion}-builder AS builder
 
 RUN xcaddy build \
+    --with github.com/caddy-dns/acmeproxy \
     --with github.com/caddy-dns/cloudflare \
     --with github.com/caddy-dns/porkbun \
     --with github.com/liujed/caddy-dns01proxy \
