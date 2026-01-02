@@ -3,10 +3,8 @@
 [![build-caddy](https://github.com/bsherman/caddy-plus/actions/workflows/build.yml/badge.svg)](https://github.com/bsherman/caddy-plus/actions/workflows/build.yml)
 
 Customized, weekly updated, Caddy container with extras...
-- caddy-dns/acmeproxy
 - caddy-dns/cloudflare
 - caddy-dns/porkbun
-- liujed/caddy-dns01proxy
 - lucaslorentz/caddy-docker-proxy/v2
 - mholt/caddy-l4
 
