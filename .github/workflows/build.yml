@@ -102,6 +102,7 @@ jobs:
         run: |
           trivy image \
             --scanners vuln,secret \
+            --platform linux/${{ matrix.arch }} \
             --format json \
             --output trivy-${{ matrix.arch }}.json \
             caddy-plus:test-${{ matrix.arch }}
@@ -110,6 +111,7 @@ jobs:
         run: |
           trivy image \
             --scanners vuln \
+            --platform linux/${{ matrix.arch }} \
             --ignore-unfixed \
             --severity CRITICAL \
             --exit-code 1 \
@@ -245,6 +247,7 @@ jobs:
         run: |
           trivy image \
             --scanners vuln \
+            --platform linux/${{ matrix.arch }} \
             --ignore-unfixed \
             --severity CRITICAL \
             --exit-code 1 \
@@ -390,9 +393,9 @@ jobs:
               digest=${ARM64_DIGEST}
             fi
             subject="${IMAGE}@${digest}"
-            trivy image --scanners vuln,secret --format json --output "trivy-${arch}.json" "${subject}"
-            trivy image --scanners vuln --format sarif --output "trivy-${arch}.sarif" "${subject}"
-            trivy image --scanners vuln --format cosign-vuln --output "trivy-${arch}.cosign.json" "${subject}"
+            trivy image --scanners vuln,secret --platform "linux/${arch}" --format json --output "trivy-${arch}.json" "${subject}"
+            trivy image --scanners vuln --platform "linux/${arch}" --format sarif --output "trivy-${arch}.sarif" "${subject}"
+            trivy image --scanners vuln --platform "linux/${arch}" --format cosign-vuln --output "trivy-${arch}.cosign.json" "${subject}"
           done
 
       - name: Attest scan results and verify signature
