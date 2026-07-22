@@ -1,0 +1,115 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "automerge": false,
+  "dependencyDashboard": true,
+  "labels": [
+    "dependencies"
+  ],
+  "schedule": [
+    "before 6am on Monday"
+  ],
+  "enabledManagers": [
+    "custom.regex",
+    "github-actions"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "/^Containerfile$/"
+      ],
+      "matchStrings": [
+        "ARG XCADDY_VERSION=(?<currentValue>[^\\s]+)\\nARG XCADDY_DIGEST=(?<currentDigest>sha256:[a-f0-9]+)"
+      ],
+      "depNameTemplate": "quay.io/hummingbird/xcaddy",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "/^Containerfile$/"
+      ],
+      "matchStrings": [
+        "ARG CORE_RUNTIME_VERSION=(?<currentValue>[^\\s]+)\\nARG CORE_RUNTIME_DIGEST=(?<currentDigest>sha256:[a-f0-9]+)"
+      ],
+      "depNameTemplate": "quay.io/hummingbird/core-runtime",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "/^Containerfile$/"
+      ],
+      "matchStrings": [
+        "ARG CADDY_VERSION=(?<currentValue>[^\\s]+)"
+      ],
+      "depNameTemplate": "caddyserver/caddy",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "/^Containerfile$/"
+      ],
+      "matchStrings": [
+        "ARG CLOUDFLARE_VERSION=(?<currentValue>[^\\s]+)"
+      ],
+      "depNameTemplate": "github.com/caddy-dns/cloudflare",
+      "datasourceTemplate": "go",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "/^Containerfile$/"
+      ],
+      "matchStrings": [
+        "ARG PORKBUN_VERSION=(?<currentValue>[^\\s]+)"
+      ],
+      "depNameTemplate": "github.com/caddy-dns/porkbun",
+      "datasourceTemplate": "go",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "/^\\.github/workflows/build\\.yml$/"
+      ],
+      "matchStrings": [
+        "TRIVY_VERSION: v(?<currentValue>[^\\s]+)"
+      ],
+      "depNameTemplate": "aquasecurity/trivy",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "/^\\.github/workflows/build\\.yml$/"
+      ],
+      "matchStrings": [
+        "COSIGN_VERSION: v(?<currentValue>[^\\s]+)"
+      ],
+      "depNameTemplate": "sigstore/cosign",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchFileNames": [
+        "Containerfile"
+      ],
+      "groupName": "Caddy image components"
+    }
+  ]
+}
