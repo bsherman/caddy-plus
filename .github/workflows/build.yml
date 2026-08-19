@@ -26,7 +26,7 @@ concurrency:
 env:
   IMAGE: ghcr.io/${{ github.repository_owner }}/caddy-plus
   SOURCE_REVISION: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
-  TRIVY_VERSION: v0.72.0
+  TRIVY_VERSION: v0.74.0
   COSIGN_VERSION: v3.0.6
 
 permissions:
