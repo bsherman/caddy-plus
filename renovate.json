@@ -18,7 +18,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": [
+      "managerFilePatterns": [
         "/^Containerfile$/"
       ],
       "matchStrings": [
@@ -30,7 +30,7 @@
     },
     {
       "customType": "regex",
-      "fileMatch": [
+      "managerFilePatterns": [
         "/^Containerfile$/"
       ],
       "matchStrings": [
@@ -42,7 +42,7 @@
     },
     {
       "customType": "regex",
-      "fileMatch": [
+      "managerFilePatterns": [
         "/^Containerfile$/"
       ],
       "matchStrings": [
@@ -54,7 +54,7 @@
     },
     {
       "customType": "regex",
-      "fileMatch": [
+      "managerFilePatterns": [
         "/^Containerfile$/"
       ],
       "matchStrings": [
@@ -66,7 +66,7 @@
     },
     {
       "customType": "regex",
-      "fileMatch": [
+      "managerFilePatterns": [
         "/^Containerfile$/"
       ],
       "matchStrings": [
@@ -78,7 +78,7 @@
     },
     {
       "customType": "regex",
-      "fileMatch": [
+      "managerFilePatterns": [
         "/^\\.github/workflows/build\\.yml$/"
       ],
       "matchStrings": [
@@ -90,7 +90,7 @@
     },
     {
       "customType": "regex",
-      "fileMatch": [
+      "managerFilePatterns": [
         "/^\\.github/workflows/build\\.yml$/"
       ],
       "matchStrings": [

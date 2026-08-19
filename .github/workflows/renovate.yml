@@ -1,0 +1,28 @@
+name: Verify Renovate configuration
+
+on:
+  pull_request:
+    paths:
+      - renovate.json
+      - Containerfile
+      - tests/verify-renovate.sh
+      - .github/workflows/build.yml
+      - .github/workflows/renovate.yml
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Validate configuration and dependency extraction
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/renovatebot/renovate:44.33.0@sha256:02ceaa79d0991a9fb41a0fb609463fa2bbfc21bc429c7dc7e49059fa1b234bfa
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Verify Renovate configuration
+        run: bash tests/verify-renovate.sh

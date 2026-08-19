@@ -214,6 +214,8 @@ Inspect attached SBOM and provenance attestations with `docker buildx imagetools
 
 Renovate tracks Caddy, Cloudflare, Porkbun, the Hummingbird XCaddy and core-runtime tag/digest pairs, Trivy, Cosign, and GitHub Action commit pins. Automerge is disabled.
 
+The official hosted Renovate GitHub app must have access to this repository. The release workflow intentionally authorizes automatic publication only for merged pull requests whose author is exactly `renovate[bot]`; other dependency-bot or self-hosted Renovate identities require a manual release.
+
 Image builds run only in these cases:
 
 - A Renovate pull request changes component pins in `Containerfile`.
