@@ -85,7 +85,7 @@ jobs:
             IMAGE_REVISION=${{ env.SOURCE_REVISION }}
             IMAGE_VERSION=ci-${{ env.SOURCE_REVISION }}
           cache-from: type=gha,scope=${{ matrix.arch }}
-          cache-to: type=gha,mode=max,scope=${{ matrix.arch }}
+          cache-to: ${{ (github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch') && format('type=gha,mode=max,scope={0},ignore-error=true', matrix.arch) || '' }}
 
       - name: Verify image
         env:
@@ -233,7 +233,7 @@ jobs:
           provenance: mode=max
           sbom: true
           cache-from: type=gha,scope=${{ matrix.arch }}
-          cache-to: type=gha,mode=max,scope=${{ matrix.arch }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.arch }},ignore-error=true
 
       - name: Set up Trivy
         uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
