@@ -8,6 +8,7 @@ ARG CADDY_VERSION=2.11.4
 ARG CLOUDFLARE_VERSION=0.2.4
 ARG PORKBUN_VERSION=0.3.1
 ARG LAYER4_VERSION=0.1.1
+ARG X_CRYPTO_VERSION=0.55.0
 
 FROM quay.io/hummingbird/xcaddy:${XCADDY_VERSION}@${XCADDY_DIGEST} AS builder
 
@@ -15,6 +16,7 @@ ARG CADDY_VERSION
 ARG CLOUDFLARE_VERSION
 ARG PORKBUN_VERSION
 ARG LAYER4_VERSION
+ARG X_CRYPTO_VERSION
 ARG TARGETARCH
 
 ENV CGO_ENABLED=0 \
@@ -28,7 +30,8 @@ RUN xcaddy build "v${CADDY_VERSION}" \
     --output /caddy/caddy \
     --with "github.com/caddy-dns/cloudflare@v${CLOUDFLARE_VERSION}" \
     --with "github.com/caddy-dns/porkbun@v${PORKBUN_VERSION}" \
-    --with "github.com/mholt/caddy-l4@v${LAYER4_VERSION}"
+    --with "github.com/mholt/caddy-l4@v${LAYER4_VERSION}" \
+    --replace "golang.org/x/crypto=golang.org/x/crypto@v${X_CRYPTO_VERSION}"
 
 FROM quay.io/hummingbird/core-runtime:${CORE_RUNTIME_VERSION}@${CORE_RUNTIME_DIGEST}
 

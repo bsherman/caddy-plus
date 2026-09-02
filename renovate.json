@@ -91,6 +91,18 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
+        "/^Containerfile$/"
+      ],
+      "matchStrings": [
+        "ARG X_CRYPTO_VERSION=(?<currentValue>[^\\s]+)"
+      ],
+      "depNameTemplate": "golang.org/x/crypto",
+      "datasourceTemplate": "go",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
         "/^\\.github/workflows/build\\.yml$/"
       ],
       "matchStrings": [

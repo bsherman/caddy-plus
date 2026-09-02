@@ -16,6 +16,7 @@ expected_caddy=${CADDY_VERSION:-$(pin CADDY_VERSION)}
 expected_cloudflare=${CLOUDFLARE_VERSION:-$(pin CLOUDFLARE_VERSION)}
 expected_porkbun=${PORKBUN_VERSION:-$(pin PORKBUN_VERSION)}
 expected_layer4=${LAYER4_VERSION:-$(pin LAYER4_VERSION)}
+expected_x_crypto=${X_CRYPTO_VERSION:-$(pin X_CRYPTO_VERSION)}
 
 container() {
     "${engine}" run --rm --entrypoint caddy "${image}" "$@"
@@ -29,6 +30,7 @@ grep -Fq "GOARCH=${expected_arch}" <<<"${build_info}"
 grep -Eq "github.com/caddy-dns/cloudflare[[:space:]]+v${expected_cloudflare}([[:space:]]|$)" <<<"${build_info}"
 grep -Eq "github.com/caddy-dns/porkbun[[:space:]]+v${expected_porkbun}([[:space:]]|$)" <<<"${build_info}"
 grep -Eq "github.com/mholt/caddy-l4[[:space:]]+v${expected_layer4}([[:space:]]|$)" <<<"${build_info}"
+grep -Eq "^=>[[:space:]]+golang.org/x/crypto[[:space:]]+v${expected_x_crypto}([[:space:]]|$)" <<<"${build_info}"
 
 modules=$(container list-modules)
 grep -Fxq dns.providers.cloudflare <<<"${modules}"
