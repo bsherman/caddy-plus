@@ -7,12 +7,14 @@ ARG CORE_RUNTIME_DIGEST=sha256:b9e0bf16ff3afe7f1a45451128a091af54065baaff80aec27
 ARG CADDY_VERSION=2.11.4
 ARG CLOUDFLARE_VERSION=0.2.4
 ARG PORKBUN_VERSION=0.3.1
+ARG LAYER4_VERSION=0.1.1
 
 FROM quay.io/hummingbird/xcaddy:${XCADDY_VERSION}@${XCADDY_DIGEST} AS builder
 
 ARG CADDY_VERSION
 ARG CLOUDFLARE_VERSION
 ARG PORKBUN_VERSION
+ARG LAYER4_VERSION
 ARG TARGETARCH
 
 ENV CGO_ENABLED=0 \
@@ -25,7 +27,8 @@ ENV CGO_ENABLED=0 \
 RUN xcaddy build "v${CADDY_VERSION}" \
     --output /caddy/caddy \
     --with "github.com/caddy-dns/cloudflare@v${CLOUDFLARE_VERSION}" \
-    --with "github.com/caddy-dns/porkbun@v${PORKBUN_VERSION}"
+    --with "github.com/caddy-dns/porkbun@v${PORKBUN_VERSION}" \
+    --with "github.com/mholt/caddy-l4@v${LAYER4_VERSION}"
 
 FROM quay.io/hummingbird/core-runtime:${CORE_RUNTIME_VERSION}@${CORE_RUNTIME_DIGEST}
 
@@ -35,7 +38,7 @@ ARG IMAGE_REVISION=unknown
 ARG IMAGE_VERSION=dev
 
 LABEL org.opencontainers.image.title="caddy-plus" \
-      org.opencontainers.image.description="Caddy with Cloudflare and Porkbun DNS providers" \
+      org.opencontainers.image.description="Caddy with Cloudflare and Porkbun DNS providers and Layer 4 proxy support" \
       org.opencontainers.image.source="${IMAGE_SOURCE}" \
       org.opencontainers.image.revision="${IMAGE_REVISION}" \
       org.opencontainers.image.version="${IMAGE_VERSION}" \

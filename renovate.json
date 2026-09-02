@@ -79,6 +79,18 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
+        "/^Containerfile$/"
+      ],
+      "matchStrings": [
+        "ARG LAYER4_VERSION=(?<currentValue>[^\\s]+)"
+      ],
+      "depNameTemplate": "github.com/mholt/caddy-l4",
+      "datasourceTemplate": "go",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
         "/^\\.github/workflows/build\\.yml$/"
       ],
       "matchStrings": [

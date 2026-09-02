@@ -15,6 +15,7 @@ pin() {
 expected_caddy=${CADDY_VERSION:-$(pin CADDY_VERSION)}
 expected_cloudflare=${CLOUDFLARE_VERSION:-$(pin CLOUDFLARE_VERSION)}
 expected_porkbun=${PORKBUN_VERSION:-$(pin PORKBUN_VERSION)}
+expected_layer4=${LAYER4_VERSION:-$(pin LAYER4_VERSION)}
 
 container() {
     "${engine}" run --rm --entrypoint caddy "${image}" "$@"
@@ -27,15 +28,18 @@ build_info=$(container build-info)
 grep -Fq "GOARCH=${expected_arch}" <<<"${build_info}"
 grep -Eq "github.com/caddy-dns/cloudflare[[:space:]]+v${expected_cloudflare}([[:space:]]|$)" <<<"${build_info}"
 grep -Eq "github.com/caddy-dns/porkbun[[:space:]]+v${expected_porkbun}([[:space:]]|$)" <<<"${build_info}"
+grep -Eq "github.com/mholt/caddy-l4[[:space:]]+v${expected_layer4}([[:space:]]|$)" <<<"${build_info}"
 
 modules=$(container list-modules)
 grep -Fxq dns.providers.cloudflare <<<"${modules}"
 grep -Fxq dns.providers.porkbun <<<"${modules}"
-if grep -Eq 'caddy-docker-proxy|caddy\.admin|caddy\.l4|caddy-ui|docker-proxy|(^|\.)layer4(\.|$)' <<<"${modules}"; then
+grep -Fxq layer4 <<<"${modules}"
+grep -Fxq layer4.handlers.proxy <<<"${modules}"
+if grep -Eq 'caddy-docker-proxy|caddy\.admin|caddy-ui|docker-proxy' <<<"${modules}"; then
     echo "forbidden custom module found" >&2
     exit 1
 fi
-if grep -Eq 'lucaslorentz/caddy-docker-proxy|mholt/caddy-l4|zackwag/caddy-ui' <<<"${build_info}"; then
+if grep -Eq 'lucaslorentz/caddy-docker-proxy|zackwag/caddy-ui' <<<"${build_info}"; then
     echo "forbidden build dependency found" >&2
     exit 1
 fi
@@ -64,6 +68,18 @@ porkbun.example.invalid {
 }
 EOF
 
+cat >"${tmpdir}/layer4.Caddyfile" <<'EOF'
+{
+    layer4 {
+        :19000 {
+            route {
+                echo
+            }
+        }
+    }
+}
+EOF
+
 mount_options=ro
 if [[ ${engine} == *podman* ]]; then
     mount_options=ro,Z
@@ -73,6 +89,11 @@ fi
     --entrypoint caddy \
     --env CF_API_TOKEN=0000000000000000000000000000000000000000 \
     --volume "${tmpdir}/cloudflare.Caddyfile:/tmp/Caddyfile:${mount_options}" \
+    "${image}" validate --config /tmp/Caddyfile --adapter caddyfile
+
+"${engine}" run --rm \
+    --entrypoint caddy \
+    --volume "${tmpdir}/layer4.Caddyfile:/tmp/Caddyfile:${mount_options}" \
     "${image}" validate --config /tmp/Caddyfile --adapter caddyfile
 
 "${engine}" run --rm \

@@ -1,8 +1,8 @@
 # caddy-plus
 
-An OCI image for running Caddy as an unprivileged, Podman-managed reverse proxy. It adds only the Cloudflare and Porkbun DNS providers to the standard Caddy modules.
+An OCI image for running Caddy as an unprivileged, Podman-managed reverse proxy. It adds the Cloudflare and Porkbun DNS providers and the `caddy-l4` Layer 4 proxy app to the standard Caddy modules.
 
-The image does not contain a Caddyfile, credentials, a management UI, container socket tooling, `caddy-docker-proxy`, or Layer 4 proxy extensions.
+The image does not contain a Caddyfile, credentials, a management UI, container socket tooling, or `caddy-docker-proxy`.
 
 ## Image
 
@@ -121,6 +121,28 @@ porkbun.example.com {
 
 `caddy validate` provisions these providers but does not start Caddy or make an ACME request. CI uses syntactically valid dummy values to test both configurations without real credentials.
 
+## Layer 4 proxy
+
+The `caddy-l4` app handles raw TCP and UDP connections alongside Caddy's HTTP app. It remains experimental and may introduce breaking configuration changes between releases, so the image pins its version and Renovate proposes updates for review.
+
+This example proxies a TCP service on port `19000`:
+
+```caddyfile
+{
+	layer4 {
+		:19000 {
+			route {
+				proxy app:19000
+			}
+		}
+	}
+}
+```
+
+Caddy runs as UID `65532`, so Layer 4 listeners should use ports above `1024`. Publish each configured listener explicitly. For the example above, add `--publish 19000:19000/tcp` to the Podman command. UDP listeners need a separate mapping such as `--publish 19000:19000/udp`.
+
+The image does not declare arbitrary Layer 4 ports with `EXPOSE` because each deployment chooses its own listeners.
+
 ## Podman
 
 Create rootless-Podman volumes and a deployment-specific Caddyfile directory outside this repository:
@@ -181,9 +203,9 @@ The verification script checks:
 
 - Caddy and plugin versions from the compiled binary
 - Binary target architecture
-- Both required DNS module names
+- Both required DNS module names and the Layer 4 app and proxy handler
 - Absence of prohibited custom modules
-- Offline Cloudflare and Porkbun configuration validation
+- Offline Cloudflare, Porkbun, and Layer 4 configuration validation
 - Non-root runtime metadata and Hummingbird-compatible command
 - Absence of embedded credentials, a Caddyfile, and build tools
 
@@ -212,7 +234,7 @@ Inspect attached SBOM and provenance attestations with `docker buildx imagetools
 
 ## Updates and releases
 
-Renovate tracks Caddy, Cloudflare, Porkbun, the Hummingbird XCaddy and core-runtime tag/digest pairs, Trivy, Cosign, and GitHub Action commit pins. Automerge is disabled.
+Renovate tracks Caddy, Cloudflare, Porkbun, `caddy-l4`, the Hummingbird XCaddy and core-runtime tag/digest pairs, Trivy, Cosign, and GitHub Action commit pins. Automerge is disabled.
 
 The official hosted Renovate GitHub app must have access to this repository. The release workflow intentionally authorizes automatic publication only for merged pull requests whose author is exactly `renovate[bot]`; other dependency-bot or self-hosted Renovate identities require a manual release.
 
@@ -238,4 +260,4 @@ For an initial release or an explicitly requested rebuild, run **Build and publi
 
 Read-only UI work is intentionally out of scope. The stock `zackwag/caddy-ui` application can write and reload Caddyfiles, edit routes and log settings, and delete certificates, so it is not an inspection-only interface and is not included.
 
-The previous image's `caddy-docker-proxy`, Layer 4 module, socket integration, `latest` tag, and `docker-proxy` default command have been removed intentionally.
+The previous image's `caddy-docker-proxy`, socket integration, `latest` tag, and `docker-proxy` default command remain intentionally excluded.

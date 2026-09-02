@@ -23,7 +23,7 @@ if jq -e 'select(
 fi
 
 extraction=$(jq -c 'select(.msg == "Dependency extraction complete") | .stats.managers.regex' "${log_file}")
-if [[ ${extraction} != '{"fileCount":7,"depCount":7}' ]]; then
+if [[ ${extraction} != '{"fileCount":8,"depCount":8}' ]]; then
     echo "unexpected custom.regex extraction result: ${extraction:-missing}" >&2
     exit 1
 fi
@@ -43,6 +43,7 @@ expected_dependencies=(
     caddyserver/caddy
     github.com/caddy-dns/cloudflare
     github.com/caddy-dns/porkbun
+    github.com/mholt/caddy-l4
     aquasecurity/trivy
     sigstore/cosign
 )
@@ -65,4 +66,4 @@ if ! jq -e '
     exit 1
 fi
 
-echo "verified Renovate extraction for 7 custom dependencies and GitHub Actions"
+echo "verified Renovate extraction for 8 custom dependencies and GitHub Actions"
