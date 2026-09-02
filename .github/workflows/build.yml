@@ -96,7 +96,7 @@ jobs:
         uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
         with:
           version: ${{ env.TRIVY_VERSION }}
-          cache: true
+          cache: false
 
       - name: Create vulnerability and secret report
         run: |
@@ -239,7 +239,7 @@ jobs:
         uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
         with:
           version: ${{ env.TRIVY_VERSION }}
-          cache: true
+          cache: false
 
       - name: Enforce published digest vulnerability policy
         env:
@@ -379,7 +379,7 @@ jobs:
         uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
         with:
           version: ${{ env.TRIVY_VERSION }}
-          cache: true
+          cache: false
 
       - name: Scan published architecture images
         env:
