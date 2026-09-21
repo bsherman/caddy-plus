@@ -15,7 +15,7 @@ permissions:
 jobs:
   verify:
     name: Validate configuration and dependency extraction
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
       image: ghcr.io/renovatebot/renovate:44.104.2@sha256:c87b1c55ab98286dad9df0c1d84ebe1fbe2a805a68d48dd7a6d577709bf951a7
       options: --user 1001:1001

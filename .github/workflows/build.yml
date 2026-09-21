@@ -35,7 +35,7 @@ permissions:
 jobs:
   authorize:
     name: Authorize build trigger
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: >-
       github.event_name == 'workflow_dispatch' ||
       github.event_name == 'pull_request' ||
@@ -135,7 +135,7 @@ jobs:
        github.event.pull_request.merged == true &&
        github.event.pull_request.base.ref == 'main' &&
        github.event.pull_request.user.login == 'renovate[bot]')
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
       packages: read
@@ -273,7 +273,7 @@ jobs:
     needs:
       - release_metadata
       - publish_architecture
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
       packages: write
