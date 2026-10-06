@@ -38,8 +38,8 @@ if [[ ${file_count} != 2 ]]; then
 fi
 
 expected_dependencies=(
-    quay.io/hummingbird/xcaddy
-    quay.io/hummingbird/core-runtime
+    registry.access.redhat.com/hi/xcaddy
+    registry.access.redhat.com/hi/core-runtime
     caddyserver/caddy
     github.com/caddy-dns/cloudflare
     github.com/caddy-dns/porkbun

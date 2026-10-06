@@ -10,7 +10,7 @@ ARG PORKBUN_VERSION=0.3.1
 ARG LAYER4_VERSION=0.1.2
 ARG X_CRYPTO_VERSION=0.57.0
 
-FROM quay.io/hummingbird/xcaddy:${XCADDY_VERSION}@${XCADDY_DIGEST} AS builder
+FROM registry.access.redhat.com/hi/xcaddy:${XCADDY_VERSION}@${XCADDY_DIGEST} AS builder
 
 ARG CADDY_VERSION
 ARG CLOUDFLARE_VERSION
@@ -33,7 +33,7 @@ RUN xcaddy build "v${CADDY_VERSION}" \
     --with "github.com/mholt/caddy-l4@v${LAYER4_VERSION}" \
     --replace "golang.org/x/crypto=golang.org/x/crypto@v${X_CRYPTO_VERSION}"
 
-FROM quay.io/hummingbird/core-runtime:${CORE_RUNTIME_VERSION}@${CORE_RUNTIME_DIGEST}
+FROM registry.access.redhat.com/hi/core-runtime:${CORE_RUNTIME_VERSION}@${CORE_RUNTIME_DIGEST}
 
 ARG CADDY_VERSION
 ARG IMAGE_SOURCE=https://github.com/bsherman/caddy-plus

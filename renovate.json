@@ -24,7 +24,7 @@
       "matchStrings": [
         "ARG XCADDY_VERSION=(?<currentValue>[^\\s]+)\\nARG XCADDY_DIGEST=(?<currentDigest>sha256:[a-f0-9]+)"
       ],
-      "depNameTemplate": "quay.io/hummingbird/xcaddy",
+      "depNameTemplate": "registry.access.redhat.com/hi/xcaddy",
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker"
     },
@@ -36,7 +36,7 @@
       "matchStrings": [
         "ARG CORE_RUNTIME_VERSION=(?<currentValue>[^\\s]+)\\nARG CORE_RUNTIME_DIGEST=(?<currentDigest>sha256:[a-f0-9]+)"
       ],
-      "depNameTemplate": "quay.io/hummingbird/core-runtime",
+      "depNameTemplate": "registry.access.redhat.com/hi/core-runtime",
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker"
     },
