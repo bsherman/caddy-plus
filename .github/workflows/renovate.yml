@@ -17,7 +17,7 @@ jobs:
     name: Validate configuration and dependency extraction
     runs-on: ubuntu-26.04
     container:
-      image: ghcr.io/renovatebot/renovate:44.190.2@sha256:a1fa316d623c6a48a366ad84a8513777706ba5b471f27b531a547bffa13e424b
+      image: ghcr.io/renovatebot/renovate:44.222.1@sha256:11492804bf7b54707c658c02f6b0f25fcf8448b5e13d4b549d4df7af04e285e4
       options: --user 1001:1001
     steps:
       - name: Check out repository
